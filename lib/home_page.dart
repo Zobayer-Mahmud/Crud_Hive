@@ -25,19 +25,29 @@ class _HomePageState extends State<HomePage> {
         title: const Text("Hive Flutter"),
         centerTitle: true,
       ),
-      body: Consumer<HomeProvider>(builder: (context, homeProvider, child) {
-        return RefreshIndicator(
-          onRefresh: () async {
-            await homeProvider.getItems();
-          },
-          child: homeProvider.isLoading
+      body: RefreshIndicator(
+        onRefresh: () async {
+          setState(() {
+            Provider.of<HomeProvider>(context, listen: false).getItems();
+          });
+        },
+        child: Consumer<HomeProvider>(builder: (context, homeProvider, child) {
+          return homeProvider.isLoading
               ? const Center(
                   child: CircularProgressIndicator(),
                 )
-              : homeProvider.items.isNotEmpty
-                  ? ListView.builder(
+              : homeProvider.items.isEmpty
+                  ? const Center(
+                      child: Text(
+                        " Sorry, No data available",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  : ListView.builder(
                       itemCount: homeProvider.items.length,
                       itemBuilder: (context, int index) {
+                        print("Widget Built");
                         return Card(
                           color: Colors.amberAccent,
                           child: ListTile(
@@ -71,21 +81,19 @@ class _HomePageState extends State<HomePage> {
                                   width: 15,
                                 ),
                                 GestureDetector(
+                                    onTap: () {
+                                      homeProvider.deleteItems(
+                                        key: homeProvider.items[index]['key'],
+                                      );
+                                    },
                                     child: const Icon(Icons.delete)),
                               ],
                             ),
                           ),
                         );
-                      })
-                  : const Center(
-                      child: Text(
-                        " Sorry, No data available",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-        );
-      }),
+                      });
+        }),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           openBottomSheet.showForm(context: context);

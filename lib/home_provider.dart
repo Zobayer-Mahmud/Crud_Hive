@@ -16,11 +16,21 @@ class HomeProvider with ChangeNotifier {
       {required int key, required Map<String, dynamic> newItem}) async {
     await shoppingBox.put(key, newItem);
     await getItems();
+    print("Update Called");
     controllerClear();
+  }
+
+  Future<void> deleteItems({
+    required int key,
+  }) async {
+    await shoppingBox.delete(key);
+    print("delete Called");
+    await getItems();
   }
 
   Future<void> createDate({required Map<String, dynamic> newItem}) async {
     await shoppingBox.add(newItem);
+    print("Add Called");
 
     await getItems();
     controllerClear();
@@ -31,7 +41,7 @@ class HomeProvider with ChangeNotifier {
 
   getItems() {
     isLoading = true;
-    shoppingBox.length;
+    notifyListeners();
 
     final data = shoppingBox.keys.map((key) {
       final _item = shoppingBox.get(key);
@@ -45,6 +55,9 @@ class HomeProvider with ChangeNotifier {
     }).toList();
 
     items = data.reversed.toList();
+    print("get Called");
+    items = data.reversed.toList();
+    print(items.length);
     isLoading = false;
     notifyListeners();
   }
