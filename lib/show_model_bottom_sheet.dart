@@ -39,12 +39,27 @@ class openBottomSheet {
                   ),
                   Center(
                     child: TextButton(
+                      style: ButtonStyle(
+                        padding: MaterialStateProperty.all(
+                          const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 10),
+                        ),
+                        backgroundColor:
+                            MaterialStatePropertyAll<Color>(Colors.green),
+                      ),
                       onPressed: () {
                         itemKey != null
                             ? homeProvider.updateData()
                             : homeProvider.createDate();
                       },
-                      child: Text(itemKey != null ? "Update" : "Save"),
+                      child: Text(
+                        itemKey != null ? "Update" : "Save",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
                     ),
                   )
                 ],
