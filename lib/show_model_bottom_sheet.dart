@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_crud/ItemModel.dart';
 import 'package:hive_crud/home_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -48,9 +47,14 @@ class openBottomSheet {
                             MaterialStatePropertyAll<Color>(Colors.green),
                       ),
                       onPressed: () {
+                        ItemModel itemModel = ItemModel();
+                        itemModel.name = homeProvider.nameController.text;
+                        itemModel.email = homeProvider.emailController.text;
+                        itemModel.phone = homeProvider.phoneNumber.text;
                         itemKey != null
                             ? homeProvider.updateData()
-                            : homeProvider.createDate();
+                            : homeProvider.createDate(
+                                newItem: itemModel.toJson());
                       },
                       child: Text(
                         itemKey != null ? "Update" : "Save",
