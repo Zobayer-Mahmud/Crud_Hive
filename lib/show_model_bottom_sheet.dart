@@ -5,9 +5,19 @@ import 'package:hive_crud/home_provider.dart';
 import 'package:provider/provider.dart';
 
 class openBottomSheet {
-  static void showForm({required BuildContext context, int? itemKey}) {
+  static void showForm(
+      {required BuildContext context,
+      int? itemKey,
+      String? name,
+      email,
+      phone}) {
     HomeProvider homeProvider =
         Provider.of<HomeProvider>(context, listen: false);
+    if (itemKey != null) {
+      homeProvider.nameController.text = name ?? '';
+      homeProvider.emailController.text = email ?? '';
+      homeProvider.phoneNumber.text = phone ?? '';
+    }
     showModalBottomSheet(
         context: context,
         builder: (_) => Container(
@@ -18,6 +28,7 @@ class openBottomSheet {
                   TextFormField(
                     decoration: const InputDecoration(hintText: "Name"),
                     controller: homeProvider.nameController,
+                    textInputAction: TextInputAction.next,
                   ),
                   const SizedBox(
                     height: 20,
@@ -25,12 +36,14 @@ class openBottomSheet {
                   TextFormField(
                     decoration: const InputDecoration(hintText: "Phone"),
                     controller: homeProvider.phoneNumber,
+                    textInputAction: TextInputAction.next,
                   ),
                   const SizedBox(
                     height: 20,
                   ),
                   TextFormField(
                     decoration: const InputDecoration(hintText: "Email"),
+                    textInputAction: TextInputAction.done,
                     controller: homeProvider.emailController,
                   ),
                   const SizedBox(
@@ -52,9 +65,11 @@ class openBottomSheet {
                         itemModel.email = homeProvider.emailController.text;
                         itemModel.phone = homeProvider.phoneNumber.text;
                         itemKey != null
-                            ? homeProvider.updateData()
+                            ? homeProvider.updateData(
+                                key: itemKey, newItem: itemModel.toJson())
                             : homeProvider.createDate(
                                 newItem: itemModel.toJson());
+                        Navigator.of(context).pop();
                       },
                       child: Text(
                         itemKey != null ? "Update" : "Save",
