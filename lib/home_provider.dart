@@ -18,6 +18,7 @@ class HomeProvider with ChangeNotifier {
     await getItems();
     print("Update Called");
     controllerClear();
+    notifyListeners();
   }
 
   Future<void> deleteItems({
@@ -26,6 +27,7 @@ class HomeProvider with ChangeNotifier {
     await shoppingBox.delete(key);
     print("delete Called");
     await getItems();
+    notifyListeners();
   }
 
   Future<void> createDate({required Map<String, dynamic> newItem}) async {
@@ -34,6 +36,7 @@ class HomeProvider with ChangeNotifier {
 
     await getItems();
     controllerClear();
+    notifyListeners();
   }
 
   ItemModel itemModel = ItemModel();
@@ -54,8 +57,6 @@ class HomeProvider with ChangeNotifier {
       };
     }).toList();
 
-    items = data.reversed.toList();
-    print("get Called");
     items = data.reversed.toList();
     print(items.length);
     isLoading = false;
