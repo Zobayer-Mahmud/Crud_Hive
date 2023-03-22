@@ -20,6 +20,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print("Full widget built");
     return Scaffold(
       appBar: AppBar(
         title: const Text("Hive Flutter"),
@@ -65,16 +66,19 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 GestureDetector(
                                     onTap: () {
-                                      openBottomSheet.showForm(
-                                        context: context,
-                                        itemKey: homeProvider.items[index]
-                                            ['key'],
-                                        name: homeProvider.items[index]['name'],
-                                        email: homeProvider.items[index]
-                                            ['email'],
-                                        phone: homeProvider.items[index]
-                                            ['phone'],
-                                      );
+                                      setState(() {
+                                        openBottomSheet.showForm(
+                                          context: context,
+                                          itemKey: homeProvider.items[index]
+                                              ['key'],
+                                          name: homeProvider.items[index]
+                                              ['name'],
+                                          email: homeProvider.items[index]
+                                              ['email'],
+                                          phone: homeProvider.items[index]
+                                              ['phone'],
+                                        );
+                                      });
                                     },
                                     child: const Icon(Icons.edit)),
                                 const SizedBox(
